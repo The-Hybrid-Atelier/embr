@@ -1,0 +1,102 @@
+:coffeescript
+  $ -> 
+    list = $(".preview .image-list")
+    $(".button#flip").click ()->
+      $(list.children('img')[0]).toggleClass('active')
+      $(list.children('img')[1]).toggleClass('active')
+    $(".button#heat").click ()->
+      $(list.children('img')[2]).toggleClass('active').siblings("img").removeClass('active')
+
+    $(".item").click (event)->
+      $(this).toggleClass('selected').siblings().removeClass('selected')
+      sketch = $(this).data("sketch")
+      
+      list.children("img").remove()
+      _.each $(this).find("img"), (image, i)->
+        img = $(image).clone()
+        if i == 0
+          img.addClass("active")
+        list.append(img)
+
+      title = $(this).data("title")
+      sketch = $(this).data("sketch")
+      $(".info").find(".title").html(title)
+      $("#make").attr('href', "/tool?sketch="+sketch)
+.stage
+  .preview
+    - first = @files["Daisy"]
+    .image-list
+      - first.each_with_index do |f, i|
+        -if i == 0
+          %img.active{src: f[:filename]}
+        - else
+          %img{src: f[:filename]}
+      .buttons
+        .button#flip FLIP
+        / .button#heat
+        /   %img{src: "/icons/flame.png"}
+    %a.button.primary#make{href:"/tool?sketch=#{first[0][:sketch]}"}
+      MAKE
+  .info
+    .type Area Fill / Heat Fence
+    .title= first[0][:title]
+
+    .characteristics
+      .characteristic
+        .name Stitch Difficulty
+        .assessment Advanced
+        .badge.red
+      .characteristic
+        .name Thread Consumption
+        .assessment Low
+        .badge.green
+      .characteristic
+        .name Power Consumption
+        .assessment High
+        .badge.red
+    
+    .properties
+      .property
+        .name Thread Length
+        .value 40 cm
+      .property
+        .name Circuit Resistance
+        .value 60 Ω
+      .property
+        .name Heat Power
+        .value 2.5 W
+      .property
+        .name Expected Time
+        .value 8-15 minutes
+      
+
+
+      
+.gallery.list
+  - @files.each do |collection, files|
+    
+    .item{"data": files[0]}
+      -files.each_with_index do |f, i|
+        - if i == 0
+          %img.active{src: f[:filename]}
+        - else
+          %img{src: f[:filename]}
+      %label= files[0][:title]
+
+-if false    
+  .designs
+    .field
+      %select.ui.dropdown#design-select
+        %option{selected: true, value: "StemStitchSketch"} Stem Stitch
+        %option{value: "StarStitchSketch"} Star Stitch
+        %option{value: "FlyStitchSketch"} Fly Stitch
+        %option{value: "DaisyStitchSketch"} Daisy Stitch
+        %option{value: "SerpentineStitchSketch"} Serpentine Stitch
+        %option{value: "CrossStitchSketch"} Cross Stitch
+        %option{value: "HerringboneStitchSketch"} Herringbone Stitch
+        %option{value: "SatinStitchSketch"} Satin Stitch
+        %option{value: "LongAndShortStitchSketch"} Long and Short Stitch
+        %option{value: "ChainStitch"} Chain Stitch
+        %option{value: "FeatherStitchSketch"} Feather Stitch
+        %option{value: "SeedStitchSketch"} Seed Stitch
+  

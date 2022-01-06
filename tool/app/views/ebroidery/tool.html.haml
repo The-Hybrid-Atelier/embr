@@ -1,0 +1,269 @@
+:coffeescript
+  window.NAME = "embr-app"
+  window.VERSION = "1.0"
+  
+
+  $ ->
+    # window.socket = new HAWS("162.243.120.86", 3001)
+    window.pedal = new stitcher.Pedal()
+    window.hl = new HotKeyLegend("/ebroidery/keys")
+    window.storage = new WebStorage
+    window.needle = new NeedleTool
+      canvas: $('#main-canvas')
+      name: "Embr"
+    sketch = GET().sketch || "StemStitchSketch"
+    console.log sketch
+    sketch = new stitcher[sketch]()
+    event_binding()
+
+  event_binding = ()->
+    $(".dropdown").dropdown()
+    $('.ui.video').video()
+    $('#help-button').click ()-> $('.help.modal').modal('show')
+    $('canvas').bind 'mousewheel', (e) ->
+      e.preventDefault()
+      delta = e.originalEvent.deltaY
+      mousePosition = new paper.Point(e.offsetX, e.offsetY)
+      viewPosition = paper.view.viewToProject(mousePosition)
+      factor = if delta > 0 then 1.05 else 0.95
+      zoom(factor, viewPosition)
+    $('button#download').click ()-> needle.save_svg()
+
+    # LEGEND BINDING
+    $(document).on "heat-sim", (event)->
+      stitch.canvas.heat_sim()
+
+    $(document).on "paperkeyup", {}, (event, key, modifiers, paths)->
+      # KEY VIEW BINDING
+      $("#actions").find(".action").removeClass('active')
+    
+    $(document).on "paperkeydown", {}, (event, key, modifiers, paths)->
+      meta = _.compact(_.map modifiers, (v, k)-> k if v)
+      key_search_selector = "[data-key='"+key+"']"
+      key_search_selector = key_search_selector + "[data-meta='"+meta[0]+"']" if meta.length > 0
+      $("#actions").find(".action").removeClass('active')
+        .filter(key_search_selector)
+        .addClass("active")
+
+
+    # COMMON PAPERJS KEYBINDINGS
+    $(document).on "select", {}, (event, item)->
+      vcc = parseFloat($('input[name="vcc"]').val())
+      switch item.name
+        when "segment"
+          name = item.name
+          length = Ruler.pts2mm(item.length())
+          resistance = length * stitcher.THREAD_RESISTIVITY
+          current = vcc / resistance
+          power = vcc * current
+          side = item.side().toUpperCase()
+          color = ntc.name(item.getColor())[1]
+          
+        when 'thread'
+          name = item.name
+          length = Ruler.pts2mm(item.length())
+          resistance = length * stitcher.THREAD_RESISTIVITY
+          current = vcc / resistance
+          power = vcc * current
+          side = "THREAD"
+          color = ntc.name(item.getColor())[1]
+
+      # console.log power
+      length = Ruler.toString(length/10, "cm", 1)
+      resistance = Ruler.toString(resistance, "Ω", 1)
+      current = Ruler.toString(current*1000, "mA", 1)
+      power = Ruler.toString(power, "W", 2)
+
+
+      $('[data-calc="side"]').html(side)
+      $('[data-calc="type"]').html(name)
+      $('[data-calc="length"]').html(length)
+      $('[data-calc="resistance"]').html(resistance)
+      $('[data-calc="current"]').html(current)
+      $('[data-calc="power"]').html(power)
+      $('[data-calc="color"]').html(color)
+
+    $(document).on "refresh", {}, (event)->
+      return
+    $(document).on "paperkeydown", {}, (event, key, modifiers, paths)->
+      return      
+    # $('#design-select').trigger('input')      
+          
+/ %a#back-button.app.button{href: "http://hybridatelier.uta.edu/projects/38-siloseam"}
+/   %img{src: "/hybrid-atelier-dark.png"}
+.tools
+  .app.button.default{"data-tool": "makeTool"}
+    %img{src: "/icons/make.png"}
+    .tooltip MAKE
+
+  .app.button.screen-only{"data-tool": "stitchTool"}
+    %img{src: "/icons/stitch.png"}
+    .tooltip STITCH
+
+  .app.button{"data-tool": "probeTool"}
+    %img{src: "/icons/probe.png"}
+    .tooltip PROBE
+
+  .app.button{"data-tool": "heatTool"}
+    %img{src: "/icons/heat.png"}
+    .tooltip HEAT
+
+
+
+#progress-bar.tw.make-only
+  .ui.indicating.green.large.progress{"data": {"value": 1, "total": 100}}
+    .bar
+      .progress
+    .label STITCHES
+  #step-manager
+    .app.button.previous
+      %img{src: "/icons/left.png"}
+    .info
+      .icon
+      .description
+        .top 
+          %span{"data-calc":"color"} Tangerine 
+          %span - Stitch 
+          %span 127
+        .bottom 
+          %span{"data-calc":"side"} OVER 
+          %span - 
+          %span{"data-calc":"length"} 3 cm 
+          %span - 
+          %span{"data-calc":"resistance"} 3 Ω
+    .app.button.next
+      %img{src: "/icons/right.png"}
+.actions.heat-simulation
+  .app.button{"data-click": "heat-sim"}
+    %img{src: "/icons/undo.png"}
+    .tooltip HEATSTEP
+.actions.screen-only
+  .app.button{"data-click": "undo"}
+    %img{src: "/icons/undo.png"}
+    .tooltip UNDO
+  .app.button.toggle{"data-mousedown": "shift", "data-mouseup": "unshift"}
+    .default.state
+      %img{src: "/icons/over.png"}
+      .tooltip OVER
+    .state
+      %img{src: "/icons/under.png"}
+      .tooltip UNDER
+
+
+%a#help-button.ui.button.icon.circular.inverted.screen-only
+  %i.icon.ui.help
+
+/ .ui.modal.help
+/   %i.close.icon
+/   .header
+/     How to Use Embr
+/   .content
+/     .ui.video{"data-id" => "BlMqOIE3d1k", "data-image" => "/tool.png", "data-source" => "youtube"}
+
+/     .description
+/       %ol
+/         %li Instruction 1
+/       %p 
+/         Follow the steps in our
+/         %a{href:"https://www.instructables.com/id/Inflatable-Silicone-Octopus/"} instructable. 
+
+
+#sandbox
+  - render :partial => "toolbox"
+  %canvas{id: "main-canvas", resize: "resize", pinchstart: "onPinchStart"}
+  = render :partial => "sidebar"
+  = render 'collection'
+#top-bar
+  .left
+    %a{href: "/gallery"}
+      BACK TO GALLERY
+  .right
+    .power-status
+      %label POWER OFF
+#legend.panel.screen-only
+  .ui.segment
+    %table.ui.table.celled.fixed
+      %thead
+        %tr
+          %th{"colspan": 2}
+            %span POWER PROPERTIES
+            .ui.label.blue{style: "float: right;", "data-calc": "multi"} -
+      %tbody
+        %tr
+          %td Voltage (VCC)
+          %td
+            .ui.input.fluid
+              %input{name: "vcc", type: "number", value: 5}
+  .ui.segment
+    %table.ui.table.celled.fixed
+      %thead
+        %tr
+          %th{"colspan": 2}
+            %span PROPERTIES
+            .ui.label.blue{style: "float: right;", "data-calc": "multi"} -
+      %tbody
+        %tr
+          %td Name
+          %td
+            %span{"data-calc": "type"} -
+            %span{"data-calc": "name"}
+        %tr
+          %td Resistance
+          %td
+            %span{"data-calc": "resistance"} -
+        %tr
+          %td Current
+          %td{"data-calc": "current"} -
+        %tr
+          %td Power
+          %td{"data-calc": "power"} -
+        %tr
+          %td Length
+          %td{"data-calc": "length"} -
+        - if false
+          %tr
+            %td Width
+            %td{"data-calc": "width"} -
+          %tr
+            %td Height
+            %td{"data-calc": "height"} -
+        
+  .ui.top.attached.active.tab.segment#mouse-actions
+    .ui.message
+      %p 
+        Hold 
+        %b shift 
+        and 
+        %b mouse drag 
+        to move the canvas. 
+      %p 
+        Use your 
+        %b mouse scroll 
+        to 
+        %b zoom in/out.
+  .ui.top.attached.tabular.menu
+    .active.item 
+      .key.special
+        %span
+    .item#shift-key
+      .key.special
+        %span
+          Shift
+  .ui.bottom.attached.active.tab.segment#actions
+    .ui.list.celled
+      .item.cluster.template
+        .content
+          .header{"data-html":"key_cluster"} KEY CLUSTER
+        .list
+          .item.action.template
+            .key.image
+              %span{"data-html":"icon"} K
+            .content
+              .wrapper
+                .header.ui.field{"data-if": "inputize"} 
+                  %span{"data-html":"action"} ACTION
+                  .ui.input.fluid
+                    %select.fluid
+                      
+                
+                .description{"data-html":"help"} Joins two paths together.

@@ -3,8 +3,10 @@ Supplementary materials accompanying the CHI2022 publication:
 __Embr: A Creative Framework for Hand Embroidered Liquid Crystal Textile Displays__
 
 ## Contributors
+
 * Shreyosi Endow
 * Cesar Torres
+
 Code maintained by: Shreyosi Endow (shreyosi.endow@mavs.uta.edu)
 
 # Embr Tool

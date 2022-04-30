@@ -1,0 +1,5 @@
+
+*.cache
+tool/tmp/pids/server.pid
+*.log
+*.sqlite3

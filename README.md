@@ -11,7 +11,7 @@ Code maintained by: Shreyosi Endow (shreyosi.endow@mavs.uta.edu)
 
 # Embr Tool
 ## Live App
-A live version of the Embr Tool is available at:
+A live version of the Embr E-Stitchbook is available at:
 * https://hybridatelier.uta.edu/apps/embr
 
 ## Local installation

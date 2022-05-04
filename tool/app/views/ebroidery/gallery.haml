@@ -14,6 +14,7 @@
         _.each data, (d, i)->
           # console.log(d, i)
           dom = $(el).find(".template").clone().removeClass("template")
+          dom.find(".thumbnail").attr("src", "/stitches/thermal/"+d.name+".png")
           _.each dom.find("[name]"), (property_dom)->
             property = $(property_dom).attr('name')
             if _.includes(property, ".")
@@ -61,8 +62,10 @@
   %table.ui.table.celled.sortable.unstackable.selectable.scrollable
     %thead
       %tr
+        %th 
         %th Name
         %th Method
+        %th Type
         %th.physical Length
         %th.physical Front-Back Ratio
         %th.electrical Resistance
@@ -72,8 +75,11 @@
         %th.thermal Surface Power Density
     %tbody{"data-collection": "/ebroidery/stitchbook"}
       %tr.template
+        %td
+          %img.thumbnail 
         %td{name: "name"} 
         %td{name: "method"} 
+        %td{name: "type"} 
         %td.physical{name: "physical.length"}
         %td.physical{name: "physical.front-back ratio"}
         %td.electrical{name: "electrical.resistance"}

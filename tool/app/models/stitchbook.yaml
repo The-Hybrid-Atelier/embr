@@ -1,6 +1,7 @@
 - 
     name: chain
     method: border
+    type: generator
     physical:
         length: 407.5 mm 
         front-back ratio: "17,5" 
@@ -14,6 +15,7 @@
 - 
     name: stem
     method: border    
+    type: generator
     physical:    
         length: 208.5 mm 
         front-back ratio: "12,5" 
@@ -26,6 +28,7 @@
         surface_power_density: 2.20 mW/mm
 - 
     name: running
+    type: generator
     method: border
     physical:
         length: 93.4 mm 
@@ -40,6 +43,7 @@
 - 
     name: serpentine
     method: fill
+    type: uniform
     physical:
         length: 354.1 mm 
         front-back ratio: "21,2" 
@@ -52,6 +56,7 @@
         surface_power_density: 0.38 mW/mm^2
 -   
     name: lazy_daisy
+    type: texture
     method: fill
     physical:
         length: 422.5 mm 
@@ -66,6 +71,7 @@
 - 
     name: herringbone
     method: fill
+    type: fence
     physical:
         length: 219.6 mm 
         front-back ratio: "34,5" 
@@ -78,6 +84,7 @@
         surface_power_density: 0.62 mW/mm^2
 - 
     name: satin
+    type: texture
     method: fill
     physical:
         length: 1448.2 mm 
@@ -92,6 +99,7 @@
 - 
     name: seed
     method: fill
+    type: texture
     physical:
         length: 432.0 mm 
         front-back ratio: "4,5" 
@@ -105,6 +113,7 @@
 - 
     name: star
     method: fill
+    type: generator
     physical:
         length: 143.2 mm 
         front-back ratio: "1,1" 
@@ -118,6 +127,7 @@
 - 
     name: french_knot
     method: fill
+    type: texture
     physical:
         length: 271.3 mm 
         front-back ratio: "3,2" 
@@ -131,6 +141,7 @@
 - 
     name: cross
     method: fill
+    type: fence
     physical:
         length: 846.8 mm 
         front-back ratio: "7,5" 
@@ -144,6 +155,7 @@
 - 
     name: fly
     method: fill
+    type: fence/texture
     physical:
         length: 245.3 mm 
         front-back ratio: "6,5" 

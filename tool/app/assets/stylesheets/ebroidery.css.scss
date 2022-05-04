@@ -10,6 +10,11 @@
 */
 @import 'semantic-ui';
 $panel_width: 30%;
+
+img.thumbnail{
+	max-height: 100px;
+	width: auto;
+}
 .template, .template.tt{
 	display: none !important;
 }
@@ -92,6 +97,7 @@ html, body {
 		.bottom{ font-size: 36px; line-height: 36px;}
 		.top{ font-size: 21px; line-height: 32px;}
 	}
+
 	.button{
 		height: 90%;
 		img{

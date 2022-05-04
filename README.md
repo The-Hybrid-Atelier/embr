@@ -12,7 +12,7 @@ Code maintained by: Shreyosi Endow (shreyosi.endow@mavs.uta.edu)
 # Embr Tool
 ## Live App
 A live version of the Embr Tool is available at:
-* hybridatelier.uta.edu/apps/embr
+* https://hybridatelier.uta.edu/apps/embr
 
 ## Local installation
 The Embr application was developed as a Ruby on Rails application. To run, download and install ruby version >= 2.4.0. You will need to run initial Rails setup routines:

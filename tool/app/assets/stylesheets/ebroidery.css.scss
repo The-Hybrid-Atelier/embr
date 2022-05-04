@@ -9,6 +9,11 @@
 *= require_self
 */
 @import 'semantic-ui';
+
+.link{
+	position: relative;
+	z-index: 1000;
+}
 $panel_width: 30%;
 
 img.thumbnail{

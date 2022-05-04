@@ -15,6 +15,7 @@
           # console.log(d, i)
           dom = $(el).find(".template").clone().removeClass("template")
           dom.find(".thumbnail").attr("src", "/stitches/thermal/"+d.name+".png")
+          dom.find(".link").attr("src", "ebroidery/tool?sketch="+d.sketch)
           _.each dom.find("[name]"), (property_dom)->
             property = $(property_dom).attr('name')
             if _.includes(property, ".")
@@ -41,6 +42,8 @@
           $(this).toggleClass('primary')
           $("th."+toggle).toggleClass("hidden")
           $("td."+toggle).toggleClass("hidden")
+        $("a").click ()->
+          window.location = $(this).attr('src')
            
 
 .ui.segment.attached.top#view-block
@@ -59,7 +62,7 @@
     %button.ui.button.primary{"data-toggle": "electrical"} electrical
     %button.ui.button.primary{"data-toggle": "thermal"} thermal
 .ui.segment.attached#characterization
-  %table.ui.table.celled.sortable.unstackable.selectable.scrollable
+  %table.ui.table.celled.sortable.unstackable.scrollable
     %thead
       %tr
         %th 
@@ -75,8 +78,9 @@
         %th.thermal Surface Power Density
     %tbody{"data-collection": "/ebroidery/stitchbook"}
       %tr.template
-        %td
+        %td.selectable
           %img.thumbnail 
+          %a.ui.button.fluid.tiny.blue.link{src: "/tool?sketch="} Sketch
         %td{name: "name"} 
         %td{name: "method"} 
         %td{name: "type"} 

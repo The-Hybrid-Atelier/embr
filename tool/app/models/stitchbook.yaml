@@ -2,6 +2,7 @@
     name: chain
     method: border
     type: generator
+    sketch: ChainStitch
     physical:
         length: 407.5 mm 
         front-back ratio: "17,5" 
@@ -14,6 +15,7 @@
         surface_power_density: 1.13 mW/mm
 - 
     name: stem
+    sketch: StemStitchSketch
     method: border    
     type: generator
     physical:    
@@ -44,6 +46,7 @@
     name: serpentine
     method: fill
     type: uniform
+    sketch: SerpentineStitchSketch
     physical:
         length: 354.1 mm 
         front-back ratio: "21,2" 
@@ -58,6 +61,7 @@
     name: lazy_daisy
     type: texture
     method: fill
+    sketch: DaisyStitchSketch
     physical:
         length: 422.5 mm 
         front-back ratio: "5,4" 
@@ -72,6 +76,7 @@
     name: herringbone
     method: fill
     type: fence
+    sketch: HerringboneStitchSketch
     physical:
         length: 219.6 mm 
         front-back ratio: "34,5" 
@@ -86,6 +91,7 @@
     name: satin
     type: texture
     method: fill
+    sketch: SatinStitchSketch
     physical:
         length: 1448.2 mm 
         front-back ratio: "1,1" 
@@ -100,6 +106,7 @@
     name: seed
     method: fill
     type: texture
+    sketch: SeedStitchSketch
     physical:
         length: 432.0 mm 
         front-back ratio: "4,5" 
@@ -112,6 +119,7 @@
         surface_power_density: 0.32 mW/mm^2
 - 
     name: star
+    sketch: StarStitchSketch
     method: fill
     type: generator
     physical:
@@ -142,6 +150,7 @@
     name: cross
     method: fill
     type: fence
+    sketch: CrossStitchSketch
     physical:
         length: 846.8 mm 
         front-back ratio: "7,5" 
@@ -156,6 +165,7 @@
     name: fly
     method: fill
     type: fence/texture
+    sketch: FlyStitchSketch
     physical:
         length: 245.3 mm 
         front-back ratio: "6,5" 

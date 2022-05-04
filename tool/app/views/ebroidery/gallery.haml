@@ -1,0 +1,87 @@
+:coffeescript
+  $ -> 
+    list = $(".preview .image-list")
+    $(".button#flip").click ()->
+      $(list.children('img')[0]).toggleClass('active')
+      $(list.children('img')[1]).toggleClass('active')
+    $(".button#heat").click ()->
+      $(list.children('img')[2]).toggleClass('active').siblings("img").removeClass('active')
+
+    
+    _.each $("[data-collection]"), (el)->
+      collection = $(el).data("collection")
+      collection = $.getJSON collection, (data)->
+        _.each data, (d, i)->
+          # console.log(d, i)
+          dom = $(el).find(".template").clone().removeClass("template")
+          _.each dom.find("[name]"), (property_dom)->
+            property = $(property_dom).attr('name')
+            if _.includes(property, ".")
+              result = d
+              _.each property.split("."), (p)->
+                try
+                  result = result[p]
+                catch e
+                  result = "-"
+            else
+              result = d[property]
+            $(property_dom).html(result)
+          dom.click ()->
+            $(this).toggleClass('positive').siblings().removeClass('positive')
+            name = $(this).data('name')
+            _.each ["thermal", "front", "back", "simulation"], (view)->
+              $("img[name='"+view+"']").attr "src", "/stitches/"+view+"/"+name+".png"
+          dom.data(d)
+          $(el).append(dom)
+
+        $('table').tablesort() 
+        $("#column-toggles button").click ()->
+          toggle = $(this).data('toggle')
+          $(this).toggleClass('primary')
+          $("th."+toggle).toggleClass("hidden")
+          $("td."+toggle).toggleClass("hidden")
+           
+
+.ui.segment.attached.top#view-block
+  .views
+    .image.view
+      %img{name: "thermal"}
+    .image.view
+      %img{name: "front"}
+    .image.view
+      %img{name: "back"}
+    .image.view
+      %img{name: "simulation"}
+.ui.segment.attached#column-toggles
+  .buttons.horizontal
+    %button.ui.button.primary{"data-toggle": "physical"} physical
+    %button.ui.button.primary{"data-toggle": "electrical"} electrical
+    %button.ui.button.primary{"data-toggle": "thermal"} thermal
+.ui.segment.attached#characterization
+  %table.ui.table.celled.sortable.unstackable.selectable.scrollable
+    %thead
+      %tr
+        %th Name
+        %th Method
+        %th.physical Length
+        %th.physical Front-Back Ratio
+        %th.electrical Resistance
+        %th.electrical Current
+        %th.electrical Thread Consumption
+        %th.thermal Power
+        %th.thermal Surface Power Density
+    %tbody{"data-collection": "/ebroidery/stitchbook"}
+      %tr.template
+        %td{name: "name"} 
+        %td{name: "method"} 
+        %td.physical{name: "physical.length"}
+        %td.physical{name: "physical.front-back ratio"}
+        %td.electrical{name: "electrical.resistance"}
+        %td.electrical{name: "electrical.current"}
+        %td.electrical{name: "electrical.thread_consumption"}
+        %td.thermal{name: "thermal.power"}
+        %td.thermal{name: "thermal.surface_power_density"}
+
+
+
+    

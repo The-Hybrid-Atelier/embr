@@ -21,6 +21,7 @@
 //= require hammer-time.min
 
 //= require touch-emulator
+//= require tablesort
 
 # DESIGN TOOL
 //= require paper-design-tool

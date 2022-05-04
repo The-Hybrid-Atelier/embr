@@ -5,12 +5,16 @@ class EbroideryController < ApplicationController
     render :layout => "full_screen"
   end
   def gallery
-    @files = get_files("stitches")
+    # @files = get_files("stitches")
     render :layout => "full_screen"
   end
   def keys
     legend = YAML.load_file(Rails.root.join('app', 'models', 'tool_keys.yaml'))
     render :json => legend
+  end
+  def stitchbook
+    @stitches = YAML.load_file(Rails.root.join('app', 'models', 'stitchbook.yaml'))
+    render :json => @stitches
   end
   # HELPER METHODS
   def get_primitives

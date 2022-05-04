@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     get "keys"
     get 'tool', :as => "tool"
     get "gallery", :as => "gallery"
+    get "stitchbook"
   end
 
   root 'ebroidery#gallery'
